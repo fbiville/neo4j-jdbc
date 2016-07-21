@@ -22,13 +22,16 @@ package org.neo4j.jdbc;
 import org.neo4j.jdbc.utils.ExceptionBuilder;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
-import java.sql.*;
 import java.sql.Connection;
+import java.sql.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import static java.util.Collections.singleton;
 
 /**
  * @author AgileLARUS
@@ -42,9 +45,9 @@ public abstract class BaseDriver implements java.sql.Driver {
 	protected static final String JDBC_PREFIX = "jdbc:neo4j:";
 
 	/**
-	 * Driver prefix for the connection url.
+	 * Driver prefixes for the connection url.
 	 */
-	private String DRIVER_PREFIX;
+	private String[] DRIVER_PREFIXES = new String[0];
 
 	/**
 	 * Constructor for extended class.
@@ -52,7 +55,11 @@ public abstract class BaseDriver implements java.sql.Driver {
 	 * @param prefix Prefix of the driver for the connection url.
 	 */
 	protected BaseDriver(String prefix) throws SQLException {
-		this.DRIVER_PREFIX = prefix;
+		this(new String[] {prefix});
+	}
+
+	protected BaseDriver(String[] prefixes) throws SQLException {
+		DRIVER_PREFIXES = prefixes;
 		DriverManager.registerDriver(this);
 	}
 
@@ -85,9 +92,11 @@ public abstract class BaseDriver implements java.sql.Driver {
 		String[] pieces = url.split(":");
 		if (pieces.length > 3) {
 			if (url.startsWith(JDBC_PREFIX)) {
-				if (DRIVER_PREFIX != null) {
-					if(pieces[2].matches(DRIVER_PREFIX)) {
-						return true;
+				if (DRIVER_PREFIXES.length > 0) {
+					for (String prefix : DRIVER_PREFIXES) {
+						if(pieces[2].matches(prefix)) {
+							return true;
+						}
 					}
 				}
 				else {

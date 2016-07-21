@@ -16,27 +16,25 @@
     <!-- =========== -->
     <!-- = General = -->
     <!-- =========== -->
-    <name>Neo4j JDBC Packaging</name>
-    <artifactId>neo4j-jdbc-driver</artifactId>
-    <description>Module to package Neo4j JDBC Driver into one jar</description>
+    <name>Neo4j 2.x JDBC Embedded</name>
+    <artifactId>neo4j-jdbc-embedded-v2</artifactId>
+    <description>Embedded implementation for Neo4j 2.x JDBC Driver</description>
+
+    <!-- ============================= -->
+    <!-- = Properties                = -->
+    <!-- ============================= -->
+    <properties>
+        <neo4j.version>2.0.5</neo4j.version>
+    </properties>
 
     <!-- ================ -->
     <!-- = Dependency   = -->
     <!-- ================ -->
     <dependencies>
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-jdbc-bolt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-jdbc-http</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j.test</groupId>
-            <artifactId>neo4j-harness</artifactId>
-            <scope>test</scope>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>neo4j-jdbc</artifactId>
         </dependency>
     </dependencies>
-
+    
 </project>
