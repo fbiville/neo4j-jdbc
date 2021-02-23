@@ -26,9 +26,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -71,6 +74,10 @@ public class BoltNeo4jAuthenticationIT {
 
 	private void shouldAuthenticate(String parameters) throws SQLException {
 		boolean result = false;
+		Enumeration<Driver> driverIterator = DriverManager.getDrivers();
+		while (driverIterator.hasMoreElements()) {
+			System.out.println(driverIterator.nextElement());
+		}
 		Connection con = DriverManager.getConnection(NEO4J_JDBC_BOLT_URL + parameters);
 		assertNotNull(con);
 		try (Statement stmt = con.createStatement()) {

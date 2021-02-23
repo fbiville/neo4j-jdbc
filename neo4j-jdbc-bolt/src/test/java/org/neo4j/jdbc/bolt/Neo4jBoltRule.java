@@ -6,6 +6,7 @@ import org.junit.runners.model.Statement;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.config.Setting;
 import org.neo4j.graphdb.factory.GraphDatabaseSettings;
+import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
-import org.neo4j.kernel.configuration.BoltConnector;
 
 import static org.neo4j.graphdb.factory.GraphDatabaseSettings.BoltConnector.EncryptionLevel.DISABLED;
 
@@ -24,14 +24,6 @@ import static org.neo4j.graphdb.factory.GraphDatabaseSettings.BoltConnector.Encr
  * @author Stefan Armbruster
  */
 public class Neo4jBoltRule implements TestRule {
-
-	static {
-		try {
-			Class.forName("org.neo4j.jdbc.bolt.BoltDriver");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	private String               hostAndPort;
 	private GraphDatabaseService graphDatabase;
